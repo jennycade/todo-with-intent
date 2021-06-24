@@ -33,5 +33,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/jennycade/todo-with-intent.git",
+  "author": "Jenny Zonka <jennycade@gmail.com>",
+  "license": "MIT"
 }
