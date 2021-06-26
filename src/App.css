@@ -16,6 +16,13 @@ body {
   grid-template-columns: 1fr 400px;
 }
 
+.authPane {
+  grid-column: 1 / -1;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 1rem;
+  color: #fff;
+}
+
 .daily_list_pane {
   display: grid;
   grid-template-columns: min-content 1fr min-content;
