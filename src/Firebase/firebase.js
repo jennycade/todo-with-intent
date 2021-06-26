@@ -34,7 +34,15 @@ class Firebase {
     this.auth.currentUser.updatePassword(password);
   
   isUserSignedIn = () => {
-    return !!this.auth().currentUser;
+    return !!this.auth.currentUser;
+  }
+  getUserEmail = () => {
+    if (this.isUserSignedIn()) {
+      return this.auth.currentUser.email; 
+    } else {
+      return false;
+    }
+    
   }
 }
 
