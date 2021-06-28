@@ -6,18 +6,26 @@ import SignupForm from './SignupForm';
 import SigninForm from './SigninForm';
 
 const AuthPane = (props) => {
+  // PROPS
+  const { user, setUser } = props;
+
+  // CONTEXT
   const firebase = useContext(FirebaseContext);
 
+  // STATE
   const [display, setDisplay] = useState('main');
 
+  // FUNCTIONS
   const returnToMain = () => {
     setDisplay('main');
   }
   const signOut = () => { // TODO: Make this work
     firebase.doSignOut().then(() => {
-      setDisplay('main');
+      console.log(`You're signed out.`);
+      setUser(null);
+    }).catch((error) => {
+      console.log(error);
     });
-    // setDisplay('main');
   }
 
   let authComp = '';
@@ -37,10 +45,10 @@ const AuthPane = (props) => {
   }
 
   if (display === 'signup') {
-    authComp = <SignupForm returnToMain={returnToMain} />
+    authComp = <SignupForm setUser={ setUser } returnToMain={ returnToMain } />
   }
   if (display === 'signin') {
-    authComp = <SigninForm returnToMain={returnToMain} />
+    authComp = <SigninForm setUser={ setUser } returnToMain={ returnToMain } />
   }
 
   

@@ -2,6 +2,9 @@ import React, { useState, useContext } from 'react';
 import { FirebaseContext } from './Firebase';
 
 const SigninForm = (props) => {
+  // PROPS
+  const { setUser } = props;
+
   // CONTEXT
   const firebase = useContext(FirebaseContext);
 
@@ -39,10 +42,14 @@ const SigninForm = (props) => {
 
     firebase.doSignInWithEmailAndPassword(email, password)
       .then(authUser => {
+        // sign in
+        setUser(authUser);
         console.log(`You've signed in, ${email}!`);
+        // reset the form and error
         resetForm();
         setError(null);
-        returnToMain();
+
+        returnToMain(); // TODO: Get rid of this (when user updates in AuthPane)
       })
       .catch((err) => {
         setError(err);

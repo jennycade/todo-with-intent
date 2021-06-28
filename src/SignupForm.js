@@ -2,6 +2,9 @@ import React, { useState, useContext } from 'react';
 import { FirebaseContext } from './Firebase';
 
 const SignupForm = (props) => {
+  // PROPS
+  const { setUser } = props;
+
   // CONTEXT
   const firebase = useContext(FirebaseContext);
 
@@ -53,10 +56,15 @@ const SignupForm = (props) => {
 
     firebase.doCreateUserWithEmailAndPassword(email, password)
       .then(authUser => {
+        // log in!
+        setUser(authUser);
         console.log(`You've signed up, ${username}!`);
+
+        // clear the form and error
         resetForm();
         setError(null);
-        returnToMain();
+
+        returnToMain(); // TODO: Handle this with AuthPane instead (when user updates)
       })
       .catch((err) => {
         setError(err);
