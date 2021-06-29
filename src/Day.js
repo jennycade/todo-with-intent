@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Store from 'store';
+
+import { FirebaseContext } from './Firebase';
 
 import Welcome from './Welcome';
 import AddTodoForm from './AddTodoForm';
@@ -7,24 +9,36 @@ import TodoList from './TodoList';
 import './App.css';
 
 const Day = (props) => {
-  const date = props.date;
-  const dateString = date.toDateString();
+  // PROPS
+  const { date, user } = props;
 
+  // CONTEXT
+  const firebase = useContext(FirebaseContext);
+
+  // STATE
+  // Date
+  const dateString = date.toDateString();
   // pull from localStorage if present
-  const [todos, setTodos] = useState(Store.get(dateString) || []); // TODO: Get this from firebase instead!
+  const [todos, setTodos] = useState([])
+  
+  // if (uid) {
+  //   setTodos(firebase.getDateTodos(uid, dateString));
+  // }
 
   const addTodo = (title) => {
+    const newTodo = {
+      id: getNextId(),
+      title,
+      completed: false,
+      dateString,
+    }
     const newTodos = [
       ...todos,
-      {
-        id: getNextId(),
-        title,
-        completed: false,
-      }
+      newTodo,
     ];
     setTodos(newTodos);
-      
-    Store.set(dateString, newTodos); // TODO: Convert to Firebase
+
+    firebase.addTodo(newTodo);
   }
 
   const toggleTodoCompleted = (id) => {
@@ -33,7 +47,7 @@ const Day = (props) => {
 
     newTodos[index].completed = !newTodos[index].completed;
     setTodos(newTodos);
-    Store.set(dateString, newTodos); // TODO: Convert to firebase
+    // Store.set(dateString, newTodos); // TODO: Convert to firebase
   }
 
   const removeTodo = (id) => {

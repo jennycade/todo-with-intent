@@ -5,6 +5,9 @@ import TodoList from './TodoList';
 import AddTodoForm from './AddTodoForm';
 
 const Bucket = (props) => {
+
+  // TODO: Scrap this component and combine it with Day.js
+
   const bucketName = props.bucketName;
   const [todos, setTodos] = useState(Store.get(bucketName) || []); // TODO: Convert to firebase
   

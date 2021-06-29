@@ -1,5 +1,6 @@
 import app from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCCASkwvPXLH8UD6unCDhztxn81tuZmAf4",
@@ -15,6 +16,7 @@ class Firebase {
     app.initializeApp(firebaseConfig);
 
     this.auth = app.auth();
+    this.db = app.firestore();
   }
 
   // Auth API
@@ -49,6 +51,47 @@ class Firebase {
     } else {
       return null;
     }
+  }
+
+  onAuthStateChange = (callback) => {
+    return this.auth.onAuthStateChanged(user => {
+      if (user) {
+        callback(this.getCurrentUser());
+      } else {
+        callback(null);
+      }
+    });
+  }
+
+  // Firestore API
+  addTodo = ( todo ) => {
+    this.db.collection('todos').add({
+      ...todo,
+      uid: this.getCurrentUser().uid,
+    })
+    .then(() => {
+      console.log('Todo successfully saved!');
+    })
+    .catch((error) => {
+      console.error('Error writing todo: ', error);
+    });
+  }
+
+  getDateTodos = ( uid, dateString ) => {
+    const todosRef = this.db.collection('todos');
+    const query = todosRef.where('uid', '===', uid).where('dateString', '===', dateString)
+      .catch((error) => {
+        console.log(`Error getting todos: ${error}`);
+      });
+    query.get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          console.log(doc.id, ' => ', doc.data());
+        });
+      })
+      .catch((error) => {
+        console.log('Error getting todos: ', error);
+      });
   }
 }
 
