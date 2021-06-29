@@ -45,6 +45,13 @@ class Firebase {
       return false;
     }
   }
+  getUserID = () => {
+    if (this.isUserSignedIn()) {
+      return this.auth.currentUser.uid;
+    } else {
+      return null;
+    }
+  }
   getCurrentUser = () => {
     if (this.isUserSignedIn()) {
       return this.auth.currentUser;
@@ -53,12 +60,12 @@ class Firebase {
     }
   }
 
-  onAuthStateChange = (callback) => {
+  onAuthStateChange = (setUser) => {
     return this.auth.onAuthStateChanged(user => {
       if (user) {
-        callback(this.getCurrentUser());
+        setUser(user);
       } else {
-        callback(null);
+        setUser(null);
       }
     });
   }
@@ -77,13 +84,10 @@ class Firebase {
     });
   }
 
-  getDateTodos = ( uid, dateString ) => {
+  getDateTodos = ( uid, dateString ) => { // TODO: include callback so this can send the todos back to the react component that called it!
     const todosRef = this.db.collection('todos');
-    const query = todosRef.where('uid', '===', uid).where('dateString', '===', dateString)
-      .catch((error) => {
-        console.log(`Error getting todos: ${error}`);
-      });
-    query.get()
+    todosRef.where('uid', '===', uid).where('dateString', '===', dateString)
+      .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           console.log(doc.id, ' => ', doc.data());

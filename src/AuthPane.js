@@ -7,7 +7,7 @@ import SigninForm from './SigninForm';
 
 const AuthPane = (props) => {
   // PROPS
-  const { user, setUser } = props;
+  const { setUser } = props;
 
   // CONTEXT
   const firebase = useContext(FirebaseContext);
@@ -23,7 +23,6 @@ const AuthPane = (props) => {
   const signOut = () => {
     firebase.doSignOut().then(() => {
       console.log(`You're signed out.`);
-      setUser(null);
     }).catch((error) => {
       console.log(error);
     });
@@ -32,7 +31,7 @@ const AuthPane = (props) => {
   let authComp = '';
 
   if (display === 'main') {
-    if (user) {
+    if (firebase.isUserSignedIn()) {
       authComp = <p>Signed in as {firebase.getUserEmail()}. <button onClick={ signOut }>Sign out</button></p>;
     } else {
       authComp = (

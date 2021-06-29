@@ -10,7 +10,7 @@ import './App.css';
 
 const Day = (props) => {
   // PROPS
-  const { date, user } = props;
+  const { date } = props;
 
   // CONTEXT
   const firebase = useContext(FirebaseContext);
@@ -19,10 +19,11 @@ const Day = (props) => {
   // Date
   const dateString = date.toDateString();
   // pull from localStorage if present
-  const [todos, setTodos] = useState([])
+  const [todos, setTodos] = useState([]);
   
-  // if (uid) {
-  //   setTodos(firebase.getDateTodos(uid, dateString));
+  // TODO: Activate this again once I get it working.
+  // if (firebase.isUserSignedIn()) {
+  //   setTodos(firebase.getDateTodos(firebase.getUserID(), dateString));
   // }
 
   const addTodo = (title) => {

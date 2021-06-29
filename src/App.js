@@ -13,18 +13,8 @@ const App = () => {
 
   // CONTEXT
   const firebase = useContext(FirebaseContext);
-
-  // see if a user is logged in already
-  // TODO: Make this work, or figure out why it's not working.
-  // useEffect(() => {
-  //   if (firebase.isUserSignedIn()) {
-  //     // set user
-  //     setUser(firebase.getCurrentUser());
-  //     // TODO: Use onAuthStateChange instead: https://johnwcassidy.medium.com/firebase-authentication-hooks-and-context-d0e47395f402
-  //   }
-  // }, [firebase]);
   
-  useEffect(() => {
+  useEffect(() => { // TODO: Fix this nonsense. Check out https://reactjs.org/docs/hooks-effect.html and https://johnwcassidy.medium.com/firebase-authentication-hooks-and-context-d0e47395f402
     const unsubscribe = firebase.onAuthStateChange(setUser);
     return () => {
       unsubscribe();
@@ -36,8 +26,8 @@ const App = () => {
   return (
     <div className = 'app'>
       <AuthPane user={ user } setUser={ setUser } />
-      <DailyListPane user={ user } />
-      <BucketPane user={ user } />
+      <DailyListPane />
+      <BucketPane />
     </div>
   );
 }
