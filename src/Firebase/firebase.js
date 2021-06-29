@@ -42,7 +42,13 @@ class Firebase {
     } else {
       return false;
     }
-    
+  }
+  getCurrentUser = () => {
+    if (this.isUserSignedIn()) {
+      return this.auth.currentUser;
+    } else {
+      return null;
+    }
   }
 }
 

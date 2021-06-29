@@ -19,7 +19,8 @@ const AuthPane = (props) => {
   const returnToMain = () => {
     setDisplay('main');
   }
-  const signOut = () => { // TODO: Make this work
+
+  const signOut = () => {
     firebase.doSignOut().then(() => {
       console.log(`You're signed out.`);
       setUser(null);
@@ -31,7 +32,7 @@ const AuthPane = (props) => {
   let authComp = '';
 
   if (display === 'main') {
-    if (firebase.isUserSignedIn()) {
+    if (user) {
       authComp = <p>Signed in as {firebase.getUserEmail()}. <button onClick={ signOut }>Sign out</button></p>;
     } else {
       authComp = (

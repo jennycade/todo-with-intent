@@ -11,7 +11,7 @@ const Day = (props) => {
   const dateString = date.toDateString();
 
   // pull from localStorage if present
-  const [todos, setTodos] = useState(Store.get(dateString) || []);
+  const [todos, setTodos] = useState(Store.get(dateString) || []); // TODO: Get this from firebase instead!
 
   const addTodo = (title) => {
     const newTodos = [
@@ -24,7 +24,7 @@ const Day = (props) => {
     ];
     setTodos(newTodos);
       
-    Store.set(dateString, newTodos);
+    Store.set(dateString, newTodos); // TODO: Convert to Firebase
   }
 
   const toggleTodoCompleted = (id) => {
@@ -33,7 +33,7 @@ const Day = (props) => {
 
     newTodos[index].completed = !newTodos[index].completed;
     setTodos(newTodos);
-    Store.set(dateString, newTodos);
+    Store.set(dateString, newTodos); // TODO: Convert to firebase
   }
 
   const removeTodo = (id) => {
@@ -42,7 +42,7 @@ const Day = (props) => {
 
     newTodos.splice(index, 1);
     setTodos(newTodos);
-    Store.set(dateString, newTodos);
+    Store.set(dateString, newTodos); // TODO: Convert to firebase
   }
 
   const updateTodoTitle = (id, newTitle) => {
@@ -51,7 +51,7 @@ const Day = (props) => {
 
     newTodos[index].title = newTitle;
     setTodos(newTodos);
-    Store.set(dateString, newTodos);
+    Store.set(dateString, newTodos); // TODO: Convert to firebase
   }
 
   const getIndexFromId = (id) => { // TODO: use findIndex() instead

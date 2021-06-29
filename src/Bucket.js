@@ -6,7 +6,7 @@ import AddTodoForm from './AddTodoForm';
 
 const Bucket = (props) => {
   const bucketName = props.bucketName;
-  const [todos, setTodos] = useState(Store.get(bucketName) || []);
+  const [todos, setTodos] = useState(Store.get(bucketName) || []); // TODO: Convert to firebase
   
   const addTodo = (title) => {
     const newTodos = [
@@ -19,7 +19,7 @@ const Bucket = (props) => {
     ];
     setTodos(newTodos);
       
-    Store.set(bucketName, newTodos);
+    Store.set(bucketName, newTodos); // TODO: Convert to firebase
   }
 
   const removeTodo = (id) => {
@@ -28,7 +28,7 @@ const Bucket = (props) => {
 
     newTodos.splice(index, 1);
     setTodos(newTodos);
-    Store.set(bucketName, newTodos);
+    Store.set(bucketName, newTodos); // TODO: Convert to firebase
   }
 
   const updateTodoTitle = (id, newTitle) => {
@@ -37,7 +37,7 @@ const Bucket = (props) => {
 
     newTodos[index].title = newTitle;
     setTodos(newTodos);
-    Store.set(bucketName, newTodos);
+    Store.set(bucketName, newTodos); // TODO: Convert to firebase
   }
 
   const getIndexFromId = (id) => { // TODO: use findIndex() instead
