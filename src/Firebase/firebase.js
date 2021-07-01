@@ -60,12 +60,13 @@ class Firebase {
     }
   }
 
-  onAuthStateChange = (setUser) => {
+  onAuthStateChange = (setSignedIn) => {
+    // firebase.auth.onAuthStateChanged() returns the unsubscribe function
     return this.auth.onAuthStateChanged(user => {
-      if (user) {
-        setUser(user);
+      if (!!user) {
+        setSignedIn(true);
       } else {
-        setUser(null);
+        setSignedIn(false);
       }
     });
   }
@@ -85,13 +86,16 @@ class Firebase {
   }
 
   getDateTodos = ( uid, dateString ) => { // TODO: include callback so this can send the todos back to the react component that called it!
+    let todosArray = [];
     const todosRef = this.db.collection('todos');
-    todosRef.where('uid', '===', uid).where('dateString', '===', dateString)
+    todosRef.where('uid', '==', uid).where('dateString', '==', dateString)
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           console.log(doc.id, ' => ', doc.data());
+          todosArray.push(doc.data());
         });
+        return todosArray;
       })
       .catch((error) => {
         console.log('Error getting todos: ', error);

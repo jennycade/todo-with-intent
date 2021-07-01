@@ -7,7 +7,7 @@ import SigninForm from './SigninForm';
 
 const AuthPane = (props) => {
   // PROPS
-  const { setUser } = props;
+  const { setSignedIn } = props;
 
   // CONTEXT
   const firebase = useContext(FirebaseContext);
@@ -45,10 +45,10 @@ const AuthPane = (props) => {
   }
 
   if (display === 'signup') {
-    authComp = <SignupForm setUser={ setUser } returnToMain={ returnToMain } />
+    authComp = <SignupForm setSignedIn={ setSignedIn } returnToMain={ returnToMain } />
   }
   if (display === 'signin') {
-    authComp = <SigninForm setUser={ setUser } returnToMain={ returnToMain } />
+    authComp = <SigninForm setSignedIn={ setSignedIn } returnToMain={ returnToMain } />
   }
 
   

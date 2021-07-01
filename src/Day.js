@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Store from 'store';
 
 import { FirebaseContext } from './Firebase';
@@ -10,7 +10,7 @@ import './App.css';
 
 const Day = (props) => {
   // PROPS
-  const { date } = props;
+  const { date, signedIn } = props;
 
   // CONTEXT
   const firebase = useContext(FirebaseContext);
@@ -22,9 +22,21 @@ const Day = (props) => {
   const [todos, setTodos] = useState([]);
   
   // TODO: Activate this again once I get it working.
-  // if (firebase.isUserSignedIn()) {
-  //   setTodos(firebase.getDateTodos(firebase.getUserID(), dateString));
-  // }
+  useEffect(() => {
+    if (signedIn) {
+      console.log('You are signed in');
+      setTodos(firebase.getDateTodos(firebase.getUserID(), dateString));
+    } else {
+      console.log('For some reason, Day.js does not think you are signed in.');
+    }
+  }, [signedIn, dateString, firebase]);
+
+  if (signedIn) {
+    console.log('You are signed in');
+    setTodos(firebase.getDateTodos(firebase.getUserID(), dateString));
+  } else {
+    console.log('For some reason, Day.js does not think you are signed in.');
+  }
 
   const addTodo = (title) => {
     const newTodo = {

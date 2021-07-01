@@ -3,7 +3,7 @@ import { FirebaseContext } from './Firebase';
 
 const SigninForm = (props) => {
   // PROPS
-  const { setUser } = props;
+  const { setSignedIn } = props;
 
   // CONTEXT
   const firebase = useContext(FirebaseContext);
@@ -43,7 +43,7 @@ const SigninForm = (props) => {
     firebase.doSignInWithEmailAndPassword(email, password)
       .then(authUser => {
         // sign in
-        setUser(authUser);
+        // setSignedIn(true); // firebase.onAuthStateChange() should handle this, right?
         console.log(`You've signed in, ${email}!`);
         // reset the form and error
         resetForm();
