@@ -72,17 +72,48 @@ class Firebase {
   }
 
   // Firestore API
-  addTodo = ( todo ) => {
+  addTodo = ( todo, setFbid ) => {
     this.db.collection('todos').add({
       ...todo,
       uid: this.getCurrentUser().uid,
     })
-    .then(() => {
-      console.log('Todo successfully saved!');
+    .then((docRef) => {
+      setFbid(docRef.id);
     })
     .catch((error) => {
       console.error('Error writing todo: ', error);
     });
+  }
+  toggleTodoCompleted = ( fbid ) => {
+    // get the relevant todo
+    const todoRef = this.db.collection('todos').doc(fbid);
+
+    // set new completed value
+    todoRef.get().then((doc) => {
+      const newCompleted = !doc.data().completed;
+
+      todoRef.update({
+        completed: newCompleted
+      });
+    })
+    
+
+    // todoRef.update('uid', '==', this.getUserID()).where('dateString', '==', dateString).where('id', '==', id)
+    //   .get() // TODO: Order results by id
+    //   .then((querySnapshot) => {
+    //     querySnapshot.forEach((doc) => {
+    //       const newCompleted = !doc.data().completed;
+    //       doc.update({
+    //         completed: newCompleted
+    //       });
+    //       console.log(`Toggled: ${newCompleted}`);
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     console.log(`Error getting todos: ${error}`);
+    //   });
+    
+    // TODO: send anything back to react?
   }
 
   getDateTodos = ( uid, dateString, setTodos ) => { // TODO: include callback so this can send the todos back to the react component that called it!
@@ -93,7 +124,9 @@ class Firebase {
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           console.log(doc.id, ' => ', doc.data());
-          todosArray.push(doc.data());
+          const todo = doc.data()
+          todo['fbid'] = doc.id;
+          todosArray.push(todo);
         });
         setTodos(todosArray);
       })

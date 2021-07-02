@@ -20,7 +20,7 @@ const App = () => {
     return () => {
       unsubscribe();
     }
-  }, []);
+  }, [firebase]);
 
 
 

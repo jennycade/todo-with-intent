@@ -17,15 +17,13 @@ const Day = (props) => {
 
   // STATE
   // Date
-  const dateString = date.toDateString();
+  const dateString = date.toDateString(); // TODO: navigating between days is WEIRD and jumps around erratically. Fix this (probably in DailyListPane)
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
     if (signedIn) {
-      console.log('You are signed in'); 
+      console.log('Retrieving todos…'); 
       firebase.getDateTodos(firebase.getUserID(), dateString, setTodos);
-    } else {
-      console.log('For some reason, Day.js does not think you are signed in.');
     }
   }, [signedIn, dateString, setTodos, firebase]);
   
@@ -37,13 +35,19 @@ const Day = (props) => {
       completed: false,
       dateString,
     }
-    const newTodos = [
-      ...todos,
-      newTodo,
-    ];
-    setTodos(newTodos);
+    
+    const setFbid = (newFbid) => {
+      newTodo['fbid'] = newFbid;
 
-    firebase.addTodo(newTodo);
+      const newTodos = [
+        ...todos,
+        newTodo,
+      ];
+
+      setTodos(newTodos);
+    }
+
+    firebase.addTodo(newTodo, setFbid);
   }
 
   const toggleTodoCompleted = (id) => {
@@ -53,6 +57,9 @@ const Day = (props) => {
     newTodos[index].completed = !newTodos[index].completed;
     setTodos(newTodos);
     // Store.set(dateString, newTodos); // TODO: Convert to firebase
+
+    firebase.toggleTodoCompleted(todos[index].fbid);
+    
   }
 
   const removeTodo = (id) => {
