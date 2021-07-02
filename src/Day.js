@@ -21,21 +21,21 @@ const Day = (props) => {
   const [todos, setTodos] = useState([]);
   
   // TODO: Activate this again once I get it working.
-  useEffect(() => {
-    if (signedIn) {
-      console.log('You are signed in'); // This never runs. Why?
-      setTodos(firebase.getDateTodos(firebase.getUserID(), dateString));
-    } else {
-      console.log('For some reason, Day.js does not think you are signed in.');
-    }
-  }, [signedIn, dateString, firebase]);
+  // useEffect(() => {
+  //   if (signedIn) {
+  //     console.log('You are signed in'); // This never runs. Why?
+  //     setTodos(firebase.getDateTodos(firebase.getUserID(), dateString));
+  //   } else {
+  //     console.log('For some reason, Day.js does not think you are signed in.');
+  //   }
+  // }, [signedIn, dateString, firebase]);
 
-  if (signedIn) {
-    console.log('You are signed in'); // This also never runs.
-    setTodos(firebase.getDateTodos(firebase.getUserID(), dateString));
-  } else {
-    console.log('For some reason, Day.js does not think you are signed in.');
-  }
+  // if (signedIn) {
+  //   console.log('You are signed in'); // This also never runs.
+  //   setTodos(firebase.getDateTodos(firebase.getUserID(), dateString));
+  // } else {
+  //   console.log('For some reason, Day.js does not think you are signed in.');
+  // }
 
   const addTodo = (title) => {
     const newTodo = {
@@ -98,6 +98,7 @@ const Day = (props) => {
 
   return (
     <div className="day">
+      { signedIn ? 'You are signed in' : 'You are not signed in.'}
       <Welcome
         date = { date } />
       <AddTodoForm addTodo={ addTodo }

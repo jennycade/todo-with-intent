@@ -15,14 +15,12 @@ const App = () => {
   const firebase = useContext(FirebaseContext);
   
   useEffect(() => { // TODO: Fix this nonsense. Check out https://reactjs.org/docs/hooks-effect.html and https://johnwcassidy.medium.com/firebase-authentication-hooks-and-context-d0e47395f402
-    const handleSignedInChange = (isSignedIn) => {
-      setSignedIn(isSignedIn);
-      console.log('Setting signedIn to ' + isSignedIn);
+    
+    const unsubscribe = firebase.onAuthStateChange(setSignedIn);
+    return () => {
+      unsubscribe();
     }
-    console.log('App.effect running')
-    const unsubscribe = firebase.onAuthStateChange(handleSignedInChange);
-    return unsubscribe;
-  });
+  }, []);
 
 
 
