@@ -96,21 +96,32 @@ const Day = (props) => {
     return highestId + 1;
   }
 
-  return (
-    <div className="day">
-      { signedIn ? 'You are signed in' : 'You are not signed in.'}
-      <Welcome
-        date = { date } />
-      <AddTodoForm addTodo={ addTodo }
-        prompt = { 'What would you like to do today?' }
-      />
-      <TodoList todos={ todos }
-        toggleTodoCompleted={ toggleTodoCompleted }
-        removeTodo={ removeTodo }
-        updateTodoTitle = { updateTodoTitle }
-      />
-    </div>
-  );
+  if (signedIn) {
+    return (
+      <div className="day">
+        <Welcome
+          date = { date } />
+        <AddTodoForm addTodo={ addTodo }
+          prompt = { 'What would you like to do today?' }
+        />
+        <TodoList todos={ todos }
+          toggleTodoCompleted={ toggleTodoCompleted }
+          removeTodo={ removeTodo }
+          updateTodoTitle = { updateTodoTitle }
+        />
+      </div>
+    );
+  } else {
+    return (
+      <div className="day">
+        <Welcome
+          date = { date } />
+        <p>To add to-do items, sign in.</p>
+      </div>
+    );
+  }
+
+  
 }
 
 export default Day;
