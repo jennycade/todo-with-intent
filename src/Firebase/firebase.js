@@ -89,45 +89,44 @@ class Firebase {
     const todoRef = this.db.collection('todos').doc(fbid);
 
     // set new completed value
-    todoRef.get().then((doc) => {
-      const newCompleted = !doc.data().completed;
+    todoRef.get()
+      .then((doc) => {
+        const newCompleted = !doc.data().completed;
 
-      todoRef.update({
-        completed: newCompleted
+        todoRef.update({
+          completed: newCompleted
+        });
+      })
+      .catch((error) => {
+        console.log(`Error toggling complete on todo: ${error}`);
       });
-    })
-    
-
-    // todoRef.update('uid', '==', this.getUserID()).where('dateString', '==', dateString).where('id', '==', id)
-    //   .get() // TODO: Order results by id
-    //   .then((querySnapshot) => {
-    //     querySnapshot.forEach((doc) => {
-    //       const newCompleted = !doc.data().completed;
-    //       doc.update({
-    //         completed: newCompleted
-    //       });
-    //       console.log(`Toggled: ${newCompleted}`);
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.log(`Error getting todos: ${error}`);
-    //   });
     
     // TODO: send anything back to react?
+  }
+  deleteTodo = ( fbid ) => {
+    const todoRef = this.db.collection('todos').doc(fbid);
+    todoRef.delete()
+      .then(() => {
+        console.log('Todo deleted');
+      }).catch((error) => {
+        console.error('Error removing document', error);
+      });
   }
 
   getDateTodos = ( uid, dateString, setTodos ) => { // TODO: include callback so this can send the todos back to the react component that called it!
     let todosArray = [];
     const todosRef = this.db.collection('todos');
-    todosRef.where('uid', '==', uid).where('dateString', '==', dateString)
+    todosRef.where('uid', '==', uid).where('dateString', '==', dateString).orderBy('id')
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          console.log(doc.id, ' => ', doc.data());
           const todo = doc.data()
+          // add fbid for use in react
           todo['fbid'] = doc.id;
+
           todosArray.push(todo);
         });
+        // update state
         setTodos(todosArray);
       })
       .catch((error) => {

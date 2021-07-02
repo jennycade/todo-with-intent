@@ -56,19 +56,20 @@ const Day = (props) => {
 
     newTodos[index].completed = !newTodos[index].completed;
     setTodos(newTodos);
-    // Store.set(dateString, newTodos); // TODO: Convert to firebase
 
     firebase.toggleTodoCompleted(todos[index].fbid);
+    // TODO: Send callback to firebase that returns a value?
     
   }
 
   const removeTodo = (id) => {
     let newTodos = [...todos];
-    const index = getIndexFromId(id);
+    const index = getIndexFromId(id); 
+    
+    firebase.deleteTodo(todos[index].fbid); // TODO: Send a callback before updating state?
 
     newTodos.splice(index, 1);
     setTodos(newTodos);
-    Store.set(dateString, newTodos); // TODO: Convert to firebase
   }
 
   const updateTodoTitle = (id, newTitle) => {
@@ -80,7 +81,7 @@ const Day = (props) => {
     Store.set(dateString, newTodos); // TODO: Convert to firebase
   }
 
-  const getIndexFromId = (id) => { // TODO: use findIndex() instead
+  const getIndexFromId = (id) => { // TODO: use findIndex() instead or better yet, use fbid instead of internal id
     for(let i=0; i<todos.length; i++) {
       if (todos[i].id === id) {
         return i;
