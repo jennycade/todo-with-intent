@@ -4,7 +4,11 @@ import './App.css';
 
 import Day from './Day';
 
-const DailyListPane = () => {
+const DailyListPane = (props) => {
+  // PROPS
+  const { signedIn } = props;
+
+  // STATE
   const [date, setDate] = useState(new Date());
 
   const prevDay = new Date();
@@ -23,6 +27,7 @@ const DailyListPane = () => {
       <Day
         key = { date.toDateString() }
         date = { date }
+        signedIn = { signedIn }
       />
       <NavButton
         date = { nextDay }

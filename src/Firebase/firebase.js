@@ -63,7 +63,7 @@ class Firebase {
   onAuthStateChange = (setSignedIn) => {
     // firebase.auth.onAuthStateChanged() returns the unsubscribe function
     return this.auth.onAuthStateChanged(user => {
-      if (!!user) {
+      if (user) {
         setSignedIn(true);
       } else {
         setSignedIn(false);
