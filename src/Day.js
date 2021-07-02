@@ -19,23 +19,16 @@ const Day = (props) => {
   // Date
   const dateString = date.toDateString();
   const [todos, setTodos] = useState([]);
-  
-  // TODO: Activate this again once I get it working.
-  // useEffect(() => {
-  //   if (signedIn) {
-  //     console.log('You are signed in'); // This never runs. Why?
-  //     setTodos(firebase.getDateTodos(firebase.getUserID(), dateString));
-  //   } else {
-  //     console.log('For some reason, Day.js does not think you are signed in.');
-  //   }
-  // }, [signedIn, dateString, firebase]);
 
-  // if (signedIn) {
-  //   console.log('You are signed in'); // This also never runs.
-  //   setTodos(firebase.getDateTodos(firebase.getUserID(), dateString));
-  // } else {
-  //   console.log('For some reason, Day.js does not think you are signed in.');
-  // }
+  useEffect(() => {
+    if (signedIn) {
+      console.log('You are signed in'); 
+      firebase.getDateTodos(firebase.getUserID(), dateString, setTodos);
+    } else {
+      console.log('For some reason, Day.js does not think you are signed in.');
+    }
+  }, [signedIn, dateString, setTodos, firebase]);
+  
 
   const addTodo = (title) => {
     const newTodo = {

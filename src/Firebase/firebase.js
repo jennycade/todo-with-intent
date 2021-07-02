@@ -85,7 +85,7 @@ class Firebase {
     });
   }
 
-  getDateTodos = ( uid, dateString ) => { // TODO: include callback so this can send the todos back to the react component that called it!
+  getDateTodos = ( uid, dateString, setTodos ) => { // TODO: include callback so this can send the todos back to the react component that called it!
     let todosArray = [];
     const todosRef = this.db.collection('todos');
     todosRef.where('uid', '==', uid).where('dateString', '==', dateString)
@@ -95,7 +95,7 @@ class Firebase {
           console.log(doc.id, ' => ', doc.data());
           todosArray.push(doc.data());
         });
-        return todosArray;
+        setTodos(todosArray);
       })
       .catch((error) => {
         console.log('Error getting todos: ', error);
