@@ -76,9 +76,11 @@ const Day = (props) => {
     let newTodos = [...todos];
     const index = getIndexFromId(id);
 
+    firebase.updateTodoTitle(todos[index].fbid, newTitle);
+
     newTodos[index].title = newTitle;
     setTodos(newTodos);
-    Store.set(dateString, newTodos); // TODO: Convert to firebase
+
   }
 
   const getIndexFromId = (id) => { // TODO: use findIndex() instead or better yet, use fbid instead of internal id

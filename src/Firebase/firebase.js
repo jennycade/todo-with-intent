@@ -113,6 +113,18 @@ class Firebase {
       });
   }
 
+  updateTodoTitle = ( fbid, newTitle ) => {
+    // get the relevant todo
+    const todoRef = this.db.collection('todos').doc(fbid);
+
+    // set new title
+    todoRef.update({
+      title: newTitle
+    });
+    
+    // TODO: send anything back to react?
+  }
+
   getDateTodos = ( uid, dateString, setTodos ) => { // TODO: include callback so this can send the todos back to the react component that called it!
     let todosArray = [];
     const todosRef = this.db.collection('todos');
