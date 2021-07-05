@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from 'react';
-import Store from 'store';
 
 import { FirebaseContext } from './Firebase';
 
@@ -16,8 +15,13 @@ const Day = (props) => {
   const firebase = useContext(FirebaseContext);
 
   // STATE
+  let dateString;
+  if (date === 'someday') {
+    dateString = 'someday';
+  } else {
+    dateString = date.toDateString(); // TODO: navigating between days is WEIRD and jumps around erratically. Fix this (probably in DailyListPane)
+  }
   // Date
-  const dateString = date.toDateString(); // TODO: navigating between days is WEIRD and jumps around erratically. Fix this (probably in DailyListPane)
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
@@ -27,6 +31,7 @@ const Day = (props) => {
     }
   }, [signedIn, dateString, setTodos, firebase]);
   
+  // TODO: Unbreak this for the "someday" bucket
 
   const addTodo = (title) => {
     const newTodo = {
@@ -99,26 +104,46 @@ const Day = (props) => {
     return highestId + 1;
   }
 
+  let welcome, prompt, listType, formFirst;
+  if (date instanceof Date) {
+    welcome = (
+      <Welcome date = { date } />
+    );
+    prompt = 'What would you like to do today?';
+    listType = 'day';
+    formFirst = true;
+  } else {
+    // someday list
+    welcome = (
+      <h1>{date[0].toUpperCase() + date.substring(1)}</h1>
+    );
+    prompt = 'What else do you need to do?';
+    listType = 'bucket';
+    formFirst = false;
+
+  }
+
   if (signedIn) {
     return (
-      <div className="day">
-        <Welcome
-          date = { date } />
-        <AddTodoForm addTodo={ addTodo }
-          prompt = { 'What would you like to do today?' }
-        />
+      <div className={ listType }>
+        { welcome }
+        { formFirst ? <AddTodoForm addTodo={ addTodo }
+          prompt = { prompt }
+        /> : ''}
         <TodoList todos={ todos }
           toggleTodoCompleted={ toggleTodoCompleted }
           removeTodo={ removeTodo }
           updateTodoTitle = { updateTodoTitle }
         />
+        { !formFirst ? <AddTodoForm addTodo={ addTodo }
+          prompt = { prompt }
+        /> : ''}
       </div>
     );
   } else {
     return (
-      <div className="day">
-        <Welcome
-          date = { date } />
+      <div className={ listType }>
+        { welcome }
         <p>To add to-do items, sign in.</p>
       </div>
     );

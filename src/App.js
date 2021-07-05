@@ -5,7 +5,7 @@ import { FirebaseContext } from './Firebase';
 
 import AuthPane from './AuthPane';
 import DailyListPane from './DailyListPane';
-import BucketPane from './BucketPane';
+import Day from './Day';
 
 const App = () => {
   // STATE
@@ -28,7 +28,10 @@ const App = () => {
     <div className = 'app'>
       <AuthPane signedIn={ signedIn } setSignedIn={ setSignedIn } />
       <DailyListPane signedIn={ signedIn } />
-      <BucketPane />
+      <Day
+        key = 'someday'
+        date = 'someday'
+        signedIn = { signedIn } />
     </div>
   );
 }
